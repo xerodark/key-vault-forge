@@ -4,6 +4,7 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Check } from "lucide-react";
 
 // Helper: both lock-in info strings
 const LOCKIN_NOTES = {
@@ -20,10 +21,6 @@ const IMPORTANT_NOTES = [
 
 const Deposit = () => {
   const [lockIn, setLockIn] = useState("6");
-
-  // Determine the tallest dynamic note for minHeight
-  const longestNote = LOCKIN_NOTES["12"];
-  const lineHeightClass = "leading-snug"; // Tight line height for predictability
 
   return (
     <DashboardLayout>
@@ -83,25 +80,24 @@ const Deposit = () => {
               </Button>
             </div>
             
-            <div className="relative text-sm text-crypto-gray-light w-full mt-4">
-              <h4 className="font-medium text-white mb-2">Important Notes:</h4>
-              <ul className="list-disc list-inside space-y-1">
+            <div className="text-sm text-crypto-gray-light w-full mt-4">
+              <h4 className="font-medium text-white mb-3">Important Notes:</h4>
+              <ul className="space-y-2">
                 {IMPORTANT_NOTES.map((note, idx) => (
-                  <li key={idx}>{note}</li>
+                  <li key={idx} className="flex items-start">
+                    <div className="mr-2 mt-0.5 min-w-4 text-crypto-orange">
+                      <Check className="h-4 w-4" />
+                    </div>
+                    <span>{note}</span>
+                  </li>
                 ))}
-                <li
-                  className={`relative transition-all duration-200 ${lineHeightClass}`}
-                  style={{
-                    minHeight:
-                      // Reserve exact space for the longest note on all viewports
-                      `${Math.ceil(longestNote.length / 50) * 1.25}em`
-                  }}
-                >
-                  {/* Absolutely position for animation/transition purposes */}
-                  <span className="block absolute inset-0 pointer-events-none opacity-0" aria-hidden>
-                    {longestNote}
-                  </span>
-                  <span className="block">{LOCKIN_NOTES[lockIn]}</span>
+                <li className="flex items-start">
+                  <div className="mr-2 mt-0.5 min-w-4 text-crypto-orange">
+                    <Check className="h-4 w-4" />
+                  </div>
+                  <div className="h-[42px] flex items-center">
+                    {LOCKIN_NOTES[lockIn]}
+                  </div>
                 </li>
               </ul>
             </div>
