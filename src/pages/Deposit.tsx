@@ -1,10 +1,12 @@
-
-import React from "react";
+import React, { useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const Deposit = () => {
+  const [lockIn, setLockIn] = useState("6");
+
   return (
     <DashboardLayout>
       <div className="flex flex-col gap-8">
@@ -24,6 +26,19 @@ const Deposit = () => {
           </CardHeader>
           <CardContent className="flex flex-col items-center">
             <div className="w-full p-6 rounded-lg bg-crypto-gray-dark border border-crypto-gray-dark/50 flex flex-col items-center justify-center my-8">
+              <div className="mb-8 w-full max-w-xs">
+                <span className="block text-sm text-white font-semibold mb-1">Choose your lock-in period</span>
+                <RadioGroup className="flex gap-6" value={lockIn} onValueChange={setLockIn}>
+                  <div className="flex items-center gap-2">
+                    <RadioGroupItem value="6" id="lock-6" />
+                    <label htmlFor="lock-6" className="text-white">6 months</label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <RadioGroupItem value="12" id="lock-12" />
+                    <label htmlFor="lock-12" className="text-white">12 months</label>
+                  </div>
+                </RadioGroup>
+              </div>
               <p className="text-crypto-gray-light mb-4">Coinbase Onramp Widget Placeholder</p>
               <div className="w-16 h-16 rounded-full bg-crypto-orange/20 flex items-center justify-center mb-4">
                 <span className="text-crypto-orange text-2xl">$</span>
@@ -43,6 +58,11 @@ const Deposit = () => {
                 <li>Deposits are typically available within 1-2 business days</li>
                 <li>No fees are charged for deposits</li>
                 <li>Minimum deposit amount is $100 USD</li>
+                <li>
+                  {lockIn === "6" 
+                    ? "Your funds will be locked for 6 months. Early withdrawal will not be possible." 
+                    : "Enjoy the highest yield by locking in for 12 months. Early withdrawal will not be possible."}
+                </li>
               </ul>
             </div>
           </CardContent>
