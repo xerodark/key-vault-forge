@@ -1,11 +1,29 @@
+
 import React, { useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
+// Helper: both lock-in info strings
+const LOCKIN_NOTES = {
+  "6": "Your funds will be locked for 6 months. Early withdrawal will not be possible.",
+  "12": "Enjoy the highest yield by locking in for 12 months. Early withdrawal will not be possible."
+};
+
+const IMPORTANT_NOTES = [
+  "All transactions are secured with bank-level encryption",
+  "Deposits are typically available within 1-2 business days",
+  "No fees are charged for deposits",
+  "Minimum deposit amount is $100 USD"
+];
+
 const Deposit = () => {
   const [lockIn, setLockIn] = useState("6");
+
+  // Determine the tallest dynamic note for minHeight
+  const longestNote = LOCKIN_NOTES["12"];
+  const lineHeightClass = "leading-snug"; // Tight line height for predictability
 
   return (
     <DashboardLayout>
@@ -27,15 +45,29 @@ const Deposit = () => {
           <CardContent className="flex flex-col items-center">
             <div className="w-full p-6 rounded-lg bg-crypto-gray-dark border border-crypto-gray-dark/50 flex flex-col items-center justify-center my-8">
               <div className="mb-8 w-full max-w-xs">
-                <span className="block text-sm text-white font-semibold mb-1">Choose your lock-in period</span>
-                <RadioGroup className="flex gap-6" value={lockIn} onValueChange={setLockIn}>
-                  <div className="flex items-center gap-2">
+                <span className="block text-sm sm:text-xs text-white font-semibold mb-1">Choose your lock-in period</span>
+                <RadioGroup
+                  className="flex gap-6"
+                  value={lockIn}
+                  onValueChange={setLockIn}
+                >
+                  <div className="flex items-center gap-3 sm:gap-2">
                     <RadioGroupItem value="6" id="lock-6" />
-                    <label htmlFor="lock-6" className="text-white">6 months</label>
+                    <label
+                      htmlFor="lock-6"
+                      className="text-white text-base sm:text-sm select-none cursor-pointer"
+                    >
+                      6 months
+                    </label>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-3 sm:gap-2">
                     <RadioGroupItem value="12" id="lock-12" />
-                    <label htmlFor="lock-12" className="text-white">12 months</label>
+                    <label
+                      htmlFor="lock-12"
+                      className="text-white text-base sm:text-sm select-none cursor-pointer"
+                    >
+                      12 months
+                    </label>
                   </div>
                 </RadioGroup>
               </div>
@@ -51,17 +83,25 @@ const Deposit = () => {
               </Button>
             </div>
             
-            <div className="text-sm text-crypto-gray-light w-full mt-4">
+            <div className="relative text-sm text-crypto-gray-light w-full mt-4">
               <h4 className="font-medium text-white mb-2">Important Notes:</h4>
               <ul className="list-disc list-inside space-y-1">
-                <li>All transactions are secured with bank-level encryption</li>
-                <li>Deposits are typically available within 1-2 business days</li>
-                <li>No fees are charged for deposits</li>
-                <li>Minimum deposit amount is $100 USD</li>
-                <li>
-                  {lockIn === "6" 
-                    ? "Your funds will be locked for 6 months. Early withdrawal will not be possible." 
-                    : "Enjoy the highest yield by locking in for 12 months. Early withdrawal will not be possible."}
+                {IMPORTANT_NOTES.map((note, idx) => (
+                  <li key={idx}>{note}</li>
+                ))}
+                <li
+                  className={`relative transition-all duration-200 ${lineHeightClass}`}
+                  style={{
+                    minHeight:
+                      // Reserve exact space for the longest note on all viewports
+                      `${Math.ceil(longestNote.length / 50) * 1.25}em`
+                  }}
+                >
+                  {/* Absolutely position for animation/transition purposes */}
+                  <span className="block absolute inset-0 pointer-events-none opacity-0" aria-hidden>
+                    {longestNote}
+                  </span>
+                  <span className="block">{LOCKIN_NOTES[lockIn]}</span>
                 </li>
               </ul>
             </div>
