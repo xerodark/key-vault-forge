@@ -1,4 +1,4 @@
-
+import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,7 +15,6 @@ import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import LandingPage from "./pages/LandingPage";
 
-// AuthPage: simple page allowing login/signup
 function AuthPage() {
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [email, setEmail] = useState("");
@@ -25,7 +24,6 @@ function AuthPage() {
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    // Parse mode from URL
     const params = new URLSearchParams(window.location.search);
     const urlMode = params.get("mode");
     if (urlMode === "signup" || urlMode === "login") setMode(urlMode);
@@ -137,13 +135,11 @@ function RequireAuth({ children }: { children: React.ReactNode }) {
   const location = useLocation();
 
   useEffect(() => {
-    // Listen for changes (always update state)
     const { data: {subscription} } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setLoading(false);
     });
 
-    // Get current session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setLoading(false);
@@ -167,11 +163,8 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          {/* Landing page */}
           <Route path="/" element={<LandingPage />} />
-          {/* Auth */}
           <Route path="/auth" element={<AuthPage />} />
-          {/* Protected routes */}
           <Route
             path="/dashboard"
             element={
