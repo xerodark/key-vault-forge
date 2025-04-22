@@ -1,29 +1,32 @@
 
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Shield, TrendingUp, Award } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const LandingHero = () => {
+export default function LandingHero() {
   const navigate = useNavigate();
 
   return (
     <section className="relative min-h-[60vh] flex items-center justify-center px-4 pt-24 pb-16 md:pb-28 bg-crypto-gray-darker overflow-hidden">
-      {/* Decorative background gradients */}
+      {/* Decorative glowy gradients */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[1200px] h-[400px] bg-gradient-to-r from-crypto-orange/30 to-purple-700/30 blur-3xl opacity-40" />
-        <div className="absolute bottom-[-150px] right-[-200px] w-[500px] h-[300px] bg-gradient-to-tl from-green-400/10 via-purple-600/10 to-blue-500/10 blur-3xl opacity-35" />
+        <div className="absolute top-[-80px] left-1/2 -translate-x-1/2 w-[1100px] h-[390px] bg-gradient-to-tr from-crypto-orange/30 via-purple-700/40 to-blue-500/20 blur-3xl opacity-40 animate-fade-in" />
+        <div className="absolute bottom-[-135px] right-[-120px] w-[410px] h-[250px] bg-gradient-to-tl from-green-400/15 via-purple-600/20 to-blue-500/10 blur-3xl opacity-35 animate-fade-in delay-100" />
+        <div className="absolute left-[4%] top-[37%] w-16 h-16 rounded-full bg-crypto-orange/30 blur-2xl opacity-60 animate-pulse" />
+        <div className="absolute right-[6%] bottom-[6%] w-14 h-14 rounded-full bg-purple-600/30 blur-2xl opacity-40 animate-pulse delay-150" />
       </div>
       <div className="relative z-10 flex flex-col items-center w-full max-w-3xl text-center">
         {/* Logo & headline */}
         <div className="flex flex-row gap-3 items-center justify-center mb-6">
-          <Shield size={40} className="text-crypto-orange drop-shadow-xl" />
+          <Shield size={46} className="text-crypto-orange drop-shadow-[0_6px_20px_rgba(251,146,60,0.55)] animate-pulse" />
           <span className="text-4xl md:text-5xl font-bold text-white tracking-tight font-[Inter]">
             Key Vault
           </span>
         </div>
         {/* Headline */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gradient-orange mb-4 leading-tight animate-fade-in">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gradient-orange mb-4 leading-tight drop-shadow-lg animate-fade-in">
           The Future of Secure Crypto Investing
         </h1>
         {/* Subheadline */}
@@ -38,7 +41,7 @@ const LandingHero = () => {
             onClick={() => navigate("/auth?mode=signup")}
           >
             Start Investing
-            <TrendingUp size={20} className="ml-2" />
+            <TrendingUp size={22} className="ml-2" />
           </Button>
           <Button
             size="lg"
@@ -49,13 +52,13 @@ const LandingHero = () => {
             Log In
           </Button>
         </div>
-        <div className="flex items-center gap-2 justify-center text-crypto-gray-light text-xs mt-1">
-          <Award size={18} className="text-green-400" />
-          <span>Fully non-custodial • Powered by Solana • 24/7 Smart Vault Security</span>
+        <div className="flex items-center gap-2 justify-center text-crypto-gray-light text-xs mt-0">
+          <Award size={19} className="text-green-400" />
+          <span>
+            Fully non-custodial • Powered by Solana • 24/7 Smart Vault Security
+          </span>
         </div>
       </div>
     </section>
   );
-};
-
-export default LandingHero;
+}
