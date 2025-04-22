@@ -22,7 +22,7 @@ const Deposit = () => {
           </p>
         </div>
 
-        <Card className="overflow-x-hidden card-gradient animate-scale-in max-w-2xl mx-auto">
+        <Card className="overflow-hidden card-gradient animate-scale-in w-3xl mx-auto">
           <CardHeader>
             <CardTitle className="text-xl font-medium">Fund Your Vault</CardTitle>
             <CardDescription>
