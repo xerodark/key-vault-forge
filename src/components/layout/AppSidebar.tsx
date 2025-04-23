@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { 
   LayoutDashboard, 
   ArrowDown, 
@@ -22,13 +22,33 @@ import {
   SidebarHeader,
   SidebarFooter,
 } from "@/components/ui/sidebar";
+import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
 
 export function AppSidebar() {
+  const navigate = useNavigate();
+
+  const { data: profile } = useQuery({
+    queryKey: ['profile'],
+    queryFn: async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return null;
+      
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', session.user.id)
+        .single();
+        
+      return profile;
+    }
+  });
+
   const navItems = [
     {
       title: "Dashboard",
       icon: LayoutDashboard,
-      url: "/",
+      url: "/dashboard",
     },
     {
       title: "Deposit",
@@ -50,12 +70,18 @@ export function AppSidebar() {
       icon: Settings,
       url: "/settings",
     },
-    {
+    // Only show Admin tab for admin users
+    ...(profile?.is_admin ? [{
       title: "Admin",
       icon: Shield,
       url: "/admin",
-    },
+    }] : []),
   ];
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate('/auth');
+  };
 
   return (
     <Sidebar>
@@ -89,7 +115,10 @@ export function AppSidebar() {
       </SidebarContent>
       
       <SidebarFooter className="p-4">
-        <button className="flex items-center text-crypto-gray-light hover:text-white transition-colors w-full">
+        <button 
+          className="flex items-center text-crypto-gray-light hover:text-white transition-colors w-full"
+          onClick={handleLogout}
+        >
           <LogOut className="h-5 w-5 mr-3" />
           <span>Logout</span>
         </button>

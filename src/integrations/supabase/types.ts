@@ -9,7 +9,78 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          annual_growth: number | null
+          avatar_url: string | null
+          created_at: string | null
+          current_value: number | null
+          id: string
+          is_admin: boolean | null
+          monthly_growth: number | null
+          quarterly_return: number | null
+          total_contribution: number | null
+          updated_at: string | null
+          username: string | null
+        }
+        Insert: {
+          annual_growth?: number | null
+          avatar_url?: string | null
+          created_at?: string | null
+          current_value?: number | null
+          id: string
+          is_admin?: boolean | null
+          monthly_growth?: number | null
+          quarterly_return?: number | null
+          total_contribution?: number | null
+          updated_at?: string | null
+          username?: string | null
+        }
+        Update: {
+          annual_growth?: number | null
+          avatar_url?: string | null
+          created_at?: string | null
+          current_value?: number | null
+          id?: string
+          is_admin?: boolean | null
+          monthly_growth?: number | null
+          quarterly_return?: number | null
+          total_contribution?: number | null
+          updated_at?: string | null
+          username?: string | null
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          amount: number
+          created_at: string | null
+          description: string | null
+          id: string
+          status: string | null
+          type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          status?: string | null
+          type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          status?: string | null
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
