@@ -2,9 +2,10 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useProfile } from "@/hooks/useProfile";
+import { Loader2 } from "lucide-react";
 
 export function UserAvatar() {
-  const { profile } = useProfile();
+  const { profile, loading } = useProfile();
   
   // Get initials from username or email
   const getInitials = () => {
@@ -21,6 +22,16 @@ export function UserAvatar() {
     
     return "U";
   };
+
+  if (loading) {
+    return (
+      <Avatar>
+        <AvatarFallback className="bg-crypto-gray-dark">
+          <Loader2 className="h-4 w-4 animate-spin" />
+        </AvatarFallback>
+      </Avatar>
+    );
+  }
 
   return (
     <Avatar>

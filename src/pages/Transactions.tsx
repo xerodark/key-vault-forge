@@ -1,71 +1,84 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowDown, ArrowUp, Download, Filter } from "lucide-react";
+import { ArrowDown, ArrowUp, Download, Filter, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-const transactions = [
-  {
-    id: "tx1",
-    type: "deposit",
-    amount: "5,000.00",
-    date: "Apr 15, 2025",
-    status: "completed",
-    description: "Bank transfer deposit"
-  },
-  {
-    id: "tx2",
-    type: "withdrawal",
-    amount: "1,200.00",
-    date: "Apr 12, 2025",
-    status: "completed",
-    description: "Withdrawal to bank account"
-  },
-  {
-    id: "tx3",
-    type: "deposit",
-    amount: "3,000.00",
-    date: "Apr 5, 2025",
-    status: "completed",
-    description: "Bank transfer deposit"
-  },
-  {
-    id: "tx4",
-    type: "deposit",
-    amount: "2,500.00",
-    date: "Mar 28, 2025",
-    status: "completed",
-    description: "Debit card deposit"
-  },
-  {
-    id: "tx5",
-    type: "withdrawal",
-    amount: "800.00",
-    date: "Mar 22, 2025",
-    status: "completed",
-    description: "Withdrawal to bank account"
-  },
-  {
-    id: "tx6",
-    type: "deposit",
-    amount: "1,500.00",
-    date: "Mar 15, 2025",
-    status: "completed",
-    description: "Bank transfer deposit"
-  },
-  {
-    id: "tx7",
-    type: "withdrawal",
-    amount: "400.00",
-    date: "Mar 8, 2025",
-    status: "completed",
-    description: "Withdrawal to bank account"
-  }
-];
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/components/ui/use-toast";
 
 const Transactions = () => {
+  const [transactionType, setTransactionType] = useState<string>("all");
+  const [timePeriod, setTimePeriod] = useState<string>("30");
+  const { toast } = useToast();
+
+  const { data: transactions, isLoading, error } = useQuery({
+    queryKey: ['transactions', transactionType, timePeriod],
+    queryFn: async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        throw new Error("User is not authenticated");
+      }
+      
+      let query = supabase
+        .from('transactions')
+        .select('*')
+        .eq('user_id', session.user.id)
+        .order('created_at', { ascending: false });
+        
+      // Filter by transaction type if not "all"
+      if (transactionType !== "all") {
+        query = query.eq('type', transactionType);
+      }
+      
+      // Apply time period filter
+      if (timePeriod !== "all") {
+        const daysAgo = parseInt(timePeriod);
+        const date = new Date();
+        date.setDate(date.getDate() - daysAgo);
+        query = query.gte('created_at', date.toISOString());
+      }
+      
+      const { data, error } = await query;
+      
+      if (error) {
+        throw error;
+      }
+      
+      return data;
+    },
+    meta: {
+      onSettled: (data, error) => {
+        if (error) {
+          toast({
+            title: "Error loading transactions",
+            description: error.message,
+            variant: "destructive"
+          });
+        }
+      }
+    }
+  });
+
+  const handleExport = () => {
+    // Implement export functionality
+    toast({
+      title: "Export functionality",
+      description: "This feature is not yet implemented.",
+    });
+  };
+
+  const handleTypeChange = (value: string) => {
+    setTransactionType(value);
+  };
+
+  const handlePeriodChange = (value: string) => {
+    setTimePeriod(value);
+  };
+
   return (
     <DashboardLayout>
       <div className="flex flex-col gap-8">
@@ -77,7 +90,7 @@ const Transactions = () => {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={handleExport}>
               <Download className="h-4 w-4 mr-2" />
               Export
             </Button>
@@ -92,7 +105,7 @@ const Transactions = () => {
           <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
             <CardTitle className="text-xl font-medium">All Transactions</CardTitle>
             <div className="flex items-center gap-2 mt-4 sm:mt-0">
-              <Select defaultValue="all">
+              <Select defaultValue={transactionType} onValueChange={handleTypeChange}>
                 <SelectTrigger className="w-[150px] bg-crypto-gray-dark border-crypto-gray-dark/50">
                   <SelectValue placeholder="Type" />
                 </SelectTrigger>
@@ -102,7 +115,7 @@ const Transactions = () => {
                   <SelectItem value="withdrawal">Withdrawals</SelectItem>
                 </SelectContent>
               </Select>
-              <Select defaultValue="30">
+              <Select defaultValue={timePeriod} onValueChange={handlePeriodChange}>
                 <SelectTrigger className="w-[150px] bg-crypto-gray-dark border-crypto-gray-dark/50">
                   <SelectValue placeholder="Period" />
                 </SelectTrigger>
@@ -116,37 +129,53 @@ const Transactions = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {transactions.map((tx) => (
-                <div
-                  key={tx.id}
-                  className="flex items-center justify-between p-4 rounded-lg bg-crypto-gray-dark border border-crypto-gray-dark/50 hover:bg-crypto-gray-dark/70 transition-colors"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className={`p-2 rounded-full ${tx.type === "deposit" ? "bg-green-500/20" : "bg-red-500/20"}`}>
-                      {tx.type === "deposit" ? (
-                        <ArrowDown className="h-4 w-4 text-green-500" />
-                      ) : (
-                        <ArrowUp className="h-4 w-4 text-red-500" />
-                      )}
+            {isLoading ? (
+              <div className="flex justify-center p-8">
+                <Loader2 className="h-8 w-8 animate-spin text-crypto-gray-light" />
+              </div>
+            ) : error ? (
+              <div className="p-8 text-center text-red-500">
+                Error loading transactions. Please try again.
+              </div>
+            ) : transactions && transactions.length > 0 ? (
+              <div className="space-y-4">
+                {transactions.map((tx) => (
+                  <div
+                    key={tx.id}
+                    className="flex items-center justify-between p-4 rounded-lg bg-crypto-gray-dark border border-crypto-gray-dark/50 hover:bg-crypto-gray-dark/70 transition-colors"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className={`p-2 rounded-full ${tx.type === "deposit" ? "bg-green-500/20" : "bg-red-500/20"}`}>
+                        {tx.type === "deposit" ? (
+                          <ArrowDown className="h-4 w-4 text-green-500" />
+                        ) : (
+                          <ArrowUp className="h-4 w-4 text-red-500" />
+                        )}
+                      </div>
+                      <div>
+                        <p className="font-medium capitalize">{tx.type}</p>
+                        <p className="text-xs text-crypto-gray-light">{tx.description || `${tx.type} transaction`}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="font-medium capitalize">{tx.type}</p>
-                      <p className="text-xs text-crypto-gray-light">{tx.description}</p>
+                    <div className="flex flex-col items-end">
+                      <p className="font-medium">${typeof tx.amount === 'number' ? tx.amount.toLocaleString() : tx.amount}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-xs text-crypto-gray-light">
+                          {new Date(tx.created_at).toLocaleDateString()}
+                        </p>
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/20 text-green-500">
+                          {tx.status || 'completed'}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex flex-col items-end">
-                    <p className="font-medium">${tx.amount}</p>
-                    <div className="flex items-center gap-2">
-                      <p className="text-xs text-crypto-gray-light">{tx.date}</p>
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/20 text-green-500">
-                        {tx.status}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="p-8 text-center text-crypto-gray-light">
+                No transactions found. Try adjusting your filters or make a deposit to get started.
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
