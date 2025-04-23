@@ -40,7 +40,7 @@ export function useProfile() {
           .eq('id', session.user.id)
           .maybeSingle();
 
-        if (fetchError && fetchError.code !== 'PGRST116') {
+        if (fetchError) {
           console.error('Error fetching profile:', fetchError);
           setError(fetchError.message);
           toast({

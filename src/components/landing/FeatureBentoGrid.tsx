@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Star, Shield, Users, BarChart, Clock, DollarSign } from "lucide-react";
 
 const features = [
@@ -42,39 +42,105 @@ const features = [
   },
 ];
 
-const FeatureBentoGrid = () => (
-  <section className="max-w-6xl w-full mx-auto relative px-4 md:px-0 -mt-12 z-10">
-    <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-4 md:grid-rows-2 gap-6 md:gap-8">
-      {/* Large security card */}
-      <div className={`rounded-2xl p-7 shadow-lg flex flex-col justify-between items-start md:col-span-2 ${features[0].bg} ${features[0].row} animate-fade-in`}>
-        <div>{features[0].icon}</div>
-        <h3 className="text-xl font-bold text-white mt-4 mb-2">{features[0].title}</h3>
-        <p className="text-crypto-gray-light text-base mb-2">{features[0].description}</p>
+const FeatureBentoGrid = () => {
+  const gridRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    // Intersection Observer for revealing on scroll
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const cards = entry.target.querySelectorAll('.feature-card');
+            cards.forEach((card, index) => {
+              setTimeout(() => {
+                card.classList.add('feature-visible');
+              }, index * 120); // Stagger the animations
+            });
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    
+    if (gridRef.current) {
+      observer.observe(gridRef.current);
+    }
+    
+    return () => {
+      if (gridRef.current) {
+        observer.unobserve(gridRef.current);
+      }
+    };
+  }, []);
+  
+  return (
+    <section className="max-w-7xl w-full mx-auto relative px-4 md:px-0 -mt-12 md:-mt-24 z-10" ref={gridRef}>
+      <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-4 md:grid-rows-2 gap-6 md:gap-8">
+        {/* Large security card */}
+        <div 
+          className={`feature-card rounded-2xl p-7 shadow-lg flex flex-col justify-between items-start md:col-span-2 ${features[0].bg} ${features[0].row} border border-white/5 hover:border-crypto-orange/20 transition-all duration-500 transform hover:translate-y-[-5px] opacity-0`}
+          style={{transitionDelay: '0ms'}}
+        >
+          <div className="p-3 rounded-full bg-white/5 border border-white/10">
+            {features[0].icon}
+          </div>
+          <div>
+            <h3 className="text-2xl font-bold text-white mt-4 mb-3">{features[0].title}</h3>
+            <p className="text-crypto-gray-light text-base mb-2">{features[0].description}</p>
+          </div>
+        </div>
+        
+        {/* Yield card */}
+        <div 
+          className={`feature-card rounded-2xl p-7 shadow-lg flex flex-col justify-between items-start ${features[1].bg} ${features[1].col} border border-white/5 hover:border-crypto-orange/20 transition-all duration-500 transform hover:translate-y-[-5px] opacity-0`}
+          style={{transitionDelay: '120ms'}}
+        >
+          <div className="p-3 rounded-full bg-white/5 border border-white/10">
+            {features[1].icon}
+          </div>
+          <div>
+            <h3 className="text-xl font-bold text-white mt-4 mb-2">{features[1].title}</h3>
+            <p className="text-crypto-gray-light text-base">{features[1].description}</p>
+          </div>
+        </div>
+        
+        {/* Small cards */}
+        {features.slice(2).map((feature, index) => (
+          <div 
+            key={index}
+            className={`feature-card rounded-2xl p-6 shadow-lg flex flex-col justify-between items-start ${feature.bg} border border-white/5 hover:border-crypto-orange/20 transition-all duration-500 transform hover:translate-y-[-5px] opacity-0`}
+            style={{transitionDelay: `${(index + 2) * 120}ms`}}
+          >
+            <div className="p-2 rounded-full bg-white/5 border border-white/10">
+              {feature.icon}
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-white mt-3 mb-2">{feature.title}</h3>
+              <p className="text-crypto-gray-light text-sm">{feature.description}</p>
+            </div>
+          </div>
+        ))}
       </div>
-      {/* Yield card */}
-      <div className={`rounded-2xl p-7 shadow-lg flex flex-col justify-between items-start ${features[1].bg} ${features[1].col} animate-fade-in delay-150`}>
-        {features[1].icon}
-        <h3 className="text-xl font-bold text-white mt-4 mb-2">{features[1].title}</h3>
-        <p className="text-crypto-gray-light text-base">{features[1].description}</p>
-      </div>
-      {/* Small cards */}
-      <div className={`rounded-2xl p-7 shadow-lg flex flex-col justify-between items-start ${features[2].bg} animate-fade-in delay-200`}>
-        {features[2].icon}
-        <h3 className="text-lg font-semibold text-white mt-3 mb-2">{features[2].title}</h3>
-        <p className="text-crypto-gray-light text-sm">{features[2].description}</p>
-      </div>
-      <div className={`rounded-2xl p-7 shadow-lg flex flex-col justify-between items-start ${features[3].bg} animate-fade-in delay-300`}>
-        {features[3].icon}
-        <h3 className="text-lg font-semibold text-white mt-3 mb-2">{features[3].title}</h3>
-        <p className="text-crypto-gray-light text-sm">{features[3].description}</p>
-      </div>
-      <div className={`rounded-2xl p-7 shadow-lg flex flex-col justify-between items-start ${features[4].bg} animate-fade-in delay-500`}>
-        {features[4].icon}
-        <h3 className="text-lg font-semibold text-white mt-3 mb-2">{features[4].title}</h3>
-        <p className="text-crypto-gray-light text-sm">{features[4].description}</p>
-      </div>
-    </div>
-  </section>
-);
+
+      {/* CSS for animations */}
+      <style jsx="true">{`
+        .feature-card {
+          transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .feature-card:hover {
+          box-shadow: 0 20px 30px -8px rgba(0, 0, 0, 0.5), 0 15px 15px -10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .feature-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      `}</style>
+    </section>
+  );
+};
 
 export default FeatureBentoGrid;
