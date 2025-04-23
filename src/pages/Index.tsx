@@ -5,37 +5,20 @@ import { StatCard } from "@/components/dashboard/StatCard";
 import { PerformanceChart } from "@/components/dashboard/PerformanceChart";
 import { RecentTransactions } from "@/components/dashboard/RecentTransactions";
 import { AreaChart, DollarSign, Wallet } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
+import { useProfile } from "@/hooks/useProfile";
 
 const Index = () => {
-  const { toast } = useToast();
-  
-  const { data: profile } = useQuery({
-    queryKey: ['profile'],
-    queryFn: async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return null;
-      
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', session.user.id)
-        .single();
-        
-      if (error) {
-        toast({
-          title: "Error fetching profile",
-          description: error.message,
-          variant: "destructive",
-        });
-        return null;
-      }
-      
-      return data;
-    }
-  });
+  const { profile, loading } = useProfile();
+
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center h-full">
+          <p>Loading dashboard...</p>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>

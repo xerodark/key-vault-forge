@@ -3,7 +3,7 @@ import React from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "./AppSidebar";
 import { MenuIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { UserAvatar } from "./UserAvatar";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -16,15 +16,12 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         <AppSidebar />
         <div className="flex-1 flex flex-col min-h-screen overflow-hidden">
           <header className="border-b border-crypto-gray-dark h-16 flex items-center px-4 sticky top-0 z-10 bg-crypto-gray-darker">
-            {/* Fix the SidebarTrigger usage by removing asChild prop */}
             <SidebarTrigger className="md:hidden">
               <MenuIcon className="h-5 w-5" />
             </SidebarTrigger>
             <div className="ml-auto flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 rounded-full bg-crypto-gray-dark flex items-center justify-center text-sm font-medium">
-                  KS
-                </div>
+                <UserAvatar />
               </div>
             </div>
           </header>
