@@ -60,6 +60,9 @@ export default {
 					'gray-darker': '#0F0F14',
 					'gray-light': '#8E9196'
 				},
+				'navy-dark': '#1A1F35',
+				'navy-darker': '#15192C',
+				'navy-light': '#2A3654',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -122,6 +125,16 @@ export default {
 						transform: 'scale(1)',
 						opacity: '1'
 					}
+				},
+				'glow-pulse': {
+					'0%, 100%': { 
+						opacity: '0.6',
+						transform: 'scale(1)'
+					},
+					'50%': { 
+						opacity: '1',
+						transform: 'scale(1.05)'
+					},
 				}
 			},
 			animation: {
@@ -130,6 +143,12 @@ export default {
 				'fade-in': 'fade-in 0.3s ease-out',
 				'fade-out': 'fade-out 0.3s ease-out',
 				'scale-in': 'scale-in 0.2s ease-out',
+				'glow-pulse': 'glow-pulse 4s ease-in-out infinite',
+			},
+			boxShadow: {
+				'glow-sm': '0 0 15px 2px rgba(249, 115, 22, 0.15)',
+				'glow-md': '0 0 25px 5px rgba(249, 115, 22, 0.2)',
+				'glow-lg': '0 0 35px 10px rgba(249, 115, 22, 0.25)'
 			}
 		}
 	},
