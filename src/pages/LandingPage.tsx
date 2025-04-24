@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Shield, DollarSign, Clock, Users, BarChart, ArrowRight, Lock } from "lucide-react";
@@ -169,9 +168,7 @@ export default function LandingPage() {
                 key={index} 
                 className="p-4 bg-gradient-to-b from-white/5 to-transparent backdrop-blur-sm rounded-xl border border-white/10"
               >
-                <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-crypto-orange/90 to-amber-300 text-transparent bg-clip-text">
-                  {stat.value}
-                </div>
+                <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-crypto-orange/90 to-amber-300 text-transparent">{stat.value}</div>
                 <div className="text-sm text-gray-400 mt-1">{stat.label}</div>
               </div>
             ))}
@@ -302,41 +299,38 @@ export default function LandingPage() {
       </footer>
 
       {/* Global animations styling */}
-      <style jsx="true">{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes glow {
-          0%, 100% { filter: drop-shadow(0 0 5px rgba(249,115,22,0.5)); }
-          50% { filter: drop-shadow(0 0 20px rgba(249,115,22,0.7)); }
-        }
-        
-        .animate-fadeIn {
-          animation: fadeIn 1s ease-out forwards;
-        }
-        
-        .animate-glow {
-          animation: glow 4s infinite;
-        }
-        
-        .reveal {
-          opacity: 0;
-          transform: translateY(30px);
-          transition: all 1s ease-out;
-        }
-        
-        .reveal.active {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        
-        .hero-content.active {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      `}</style>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          
+          .animate-fadeIn {
+            animation: fadeIn 1s ease-out forwards;
+          }
+          
+          .animate-glow {
+            animation: glow 4s infinite;
+          }
+          
+          .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease-out;
+          }
+          
+          .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          
+          .hero-content.active {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        `
+      }} />
     </main>
   );
 }

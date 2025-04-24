@@ -1,6 +1,5 @@
-
 import React, { useEffect, useRef } from "react";
-import { Star, Shield, Users, BarChart, Clock, DollarSign } from "lucide-react";
+import { Shield, Users, BarChart, Clock, DollarSign } from "lucide-react";
 
 const features = [
   {
@@ -123,22 +122,23 @@ const FeatureBentoGrid = () => {
         ))}
       </div>
 
-      {/* CSS for animations */}
-      <style jsx="true">{`
-        .feature-card {
-          transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-        }
-        
-        .feature-card:hover {
-          box-shadow: 0 20px 30px -8px rgba(0, 0, 0, 0.5), 0 15px 15px -10px rgba(0, 0, 0, 0.3);
-        }
-        
-        .feature-visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      `}</style>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          .feature-card {
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+          }
+          
+          .feature-card:hover {
+            box-shadow: 0 20px 30px -8px rgba(0, 0, 0, 0.5), 0 15px 15px -10px rgba(0, 0, 0, 0.3);
+          }
+          
+          .feature-visible {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        `
+      }} />
     </section>
   );
 };
