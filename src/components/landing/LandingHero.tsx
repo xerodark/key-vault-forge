@@ -1,7 +1,15 @@
 import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Shield, TrendingUp, Award, ArrowRight } from "lucide-react";
+import { Shield, DollarSign, Clock, Users, BarChart, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import StatCard from "./StatCard";
+
+const stats = [
+  { value: "$487M", label: "Assets Under Management" },
+  { value: "24.8%", label: "Annual Average Return" },
+  { value: "3,400+", label: "Active Investors" },
+  { value: "99.9%", label: "Security Uptime" },
+];
 
 export default function LandingHero() {
   const navigate = useNavigate();
@@ -32,7 +40,7 @@ export default function LandingHero() {
       ref={heroRef}
       className="relative min-h-[85vh] flex items-center justify-center px-4 pt-24 pb-32 md:pb-44 bg-crypto-gray-darker overflow-hidden"
     >
-      {/* Dynamic background elements */}
+      {/* Background elements */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         <div className="absolute top-[-120px] left-1/2 -translate-x-1/2 w-[1200px] h-[450px] bg-gradient-to-tr from-crypto-orange/30 via-purple-700/40 to-blue-500/20 blur-[80px] opacity-40 animate-pulse" style={{animationDuration: '10s'}} />
         <div className="absolute bottom-[-135px] right-[-120px] w-[410px] h-[350px] bg-gradient-to-tl from-green-400/15 via-purple-600/20 to-blue-500/10 blur-[100px] opacity-35 animate-pulse" style={{animationDuration: '12s'}}/>
@@ -108,16 +116,22 @@ export default function LandingHero() {
             Fully non-custodial • Powered by Solana • 24/7 Smart Vault Security
           </span>
         </div>
+        
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto relative z-30">
+          {stats.map((stat, index) => (
+            <StatCard key={index} {...stat} />
+          ))}
+        </div>
       </div>
       
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce opacity-70">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
         <div className="text-gray-400 text-sm mb-2">Scroll to explore</div>
-        <div className="w-6 h-10 border-2 border-gray-600 rounded-full flex justify-center p-1 mx-auto">
+        <div className="w-6 h-10 border-2 border-gray-600 rounded-full flex justify-center p-1">
           <div className="w-1 h-2 bg-crypto-orange rounded-full animate-bounce delay-75"></div>
         </div>
       </div>
       
-      <style jsx="true">{`
+      <style>{`
         @keyframes twinkle {
           0%, 100% { opacity: 0.1; }
           50% { opacity: 0.7; }
