@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Shield, DollarSign, Clock, Users, BarChart, ArrowRight } from "lucide-react";
+import { Shield, DollarSign, Clock, Users, BarChart, ArrowRight, Award } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import StatCard from "./StatCard";
 
