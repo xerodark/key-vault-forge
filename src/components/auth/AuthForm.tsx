@@ -40,29 +40,35 @@ export function AuthForm({ mode, setMode }: AuthFormProps) {
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-5">
-      <input
-        type="email"
-        required
-        placeholder="Email"
-        className="rounded bg-crypto-gray-darker text-white border border-crypto-orange/20 px-4 py-3 outline-none placeholder:text-crypto-gray-light transition focus:border-crypto-orange"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        disabled={loading}
-        autoComplete="username"
-      />
-      <input
-        type="password"
-        required
-        placeholder="Password"
-        className="rounded bg-crypto-gray-darker text-white border border-crypto-orange/20 px-4 py-3 outline-none placeholder:text-crypto-gray-light transition focus:border-crypto-orange"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        disabled={loading}
-        autoComplete={mode === "login" ? "current-password" : "new-password"}
-      />
+      <div className="glass p-1 rounded-lg">
+        <input
+          type="email"
+          required
+          placeholder="Email"
+          className="w-full rounded-md bg-glass-dark text-white px-4 py-3 outline-none placeholder:text-crypto-gray-light transition focus-within:ring-1 focus-within:ring-crypto-orange/50"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          disabled={loading}
+          autoComplete="username"
+        />
+      </div>
+      
+      <div className="glass p-1 rounded-lg">
+        <input
+          type="password"
+          required
+          placeholder="Password"
+          className="w-full rounded-md bg-glass-dark text-white px-4 py-3 outline-none placeholder:text-crypto-gray-light transition focus-within:ring-1 focus-within:ring-crypto-orange/50"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          disabled={loading}
+          autoComplete={mode === "login" ? "current-password" : "new-password"}
+        />
+      </div>
+      
       <Button
         type="submit"
-        className="bg-crypto-orange hover:bg-crypto-orange-light text-white font-semibold shadow-lg py-3 text-base tracking-widest transition-all"
+        className="glass-card bg-gradient-to-r from-crypto-orange via-crypto-purple to-crypto-blue hover:shadow-glow-md text-white font-semibold shadow-lg py-3 text-base tracking-widest transition-all"
         disabled={loading}
       >
         {loading
@@ -73,23 +79,28 @@ export function AuthForm({ mode, setMode }: AuthFormProps) {
           ? "Sign Up"
           : "Log In"}
       </Button>
+      
       {error && (
-        <div className="text-red-400 text-center font-semibold animate-fade-in">{error}</div>
+        <div className="glass-card bg-red-500/10 text-red-400 p-3 rounded-lg text-center font-semibold animate-fade-in">
+          {error}
+        </div>
       )}
+      
       {submitted && (
-        <div className="text-green-500 text-center font-medium">
+        <div className="glass-card bg-green-500/10 text-green-500 p-3 rounded-lg text-center font-medium">
           {mode === "signup"
             ? "Sign up successful! Please check your email."
             : "Login successful! Redirecting..."}
         </div>
       )}
+      
       <div className="mt-0 text-center text-crypto-gray-light text-sm">
         {mode === "signup" ? (
           <>
             Already have an account?{" "}
             <button
               type="button"
-              className="underline hover:text-crypto-orange font-semibold"
+              className="text-crypto-orange hover:text-crypto-orange-light font-semibold transition-colors"
               onClick={() => setMode("login")}
               disabled={loading}
             >
@@ -101,7 +112,7 @@ export function AuthForm({ mode, setMode }: AuthFormProps) {
             Don{"'"}t have an account?{" "}
             <button
               type="button"
-              className="underline hover:text-crypto-orange font-semibold"
+              className="text-crypto-orange hover:text-crypto-orange-light font-semibold transition-colors"
               onClick={() => setMode("signup")}
               disabled={loading}
             >

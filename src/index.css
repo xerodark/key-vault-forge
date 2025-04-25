@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -70,16 +71,29 @@
     @apply bg-gradient-to-br from-crypto-gray-dark to-crypto-gray-darker;
   }
   
-  .neo-blur {
-    @apply backdrop-blur-xl bg-black/20 border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)];
+  /* Glass morphism utilities */
+  .glass {
+    @apply backdrop-blur-xl bg-glass/10 border border-glass-border shadow-[0_8px_32px_0_rgba(0,0,0,0.36)];
   }
-  
+
   .glass-card {
-    @apply backdrop-blur-xl bg-white/[0.02] border border-white/[0.05] shadow-[0_8px_32px_0_rgba(0,0,0,0.36)];
+    @apply backdrop-blur-xl bg-glass border border-glass-border shadow-[0_8px_32px_0_rgba(0,0,0,0.36)];
   }
   
   .glass-card-hover {
-    @apply hover:bg-white/[0.04] hover:border-white/[0.08] transition-all duration-300;
+    @apply hover:bg-glass-light hover:border-white/10 transition-all duration-300;
+  }
+  
+  .glass-dark {
+    @apply backdrop-blur-xl bg-glass-dark/30 border border-glass-border/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)];
+  }
+  
+  .glass-light {
+    @apply backdrop-blur-xl bg-glass-light border border-glass-border/60 shadow-[0_8px_32px_0_rgba(0,0,0,0.25)];
+  }
+  
+  .shimmer-bg {
+    @apply bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:200%_100%] animate-shimmer;
   }
   
   .text-gradient-orange {
@@ -87,11 +101,15 @@
   }
   
   .text-gradient-purple {
-    @apply bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-crypto-purple to-purple-400 bg-clip-text text-transparent;
   }
   
   .text-gradient-blue {
-    @apply bg-gradient-to-r from-blue-500 to-blue-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-crypto-blue to-blue-400 bg-clip-text text-transparent;
+  }
+
+  .text-gradient-mixed {
+    @apply bg-gradient-to-r from-crypto-orange via-crypto-purple to-crypto-blue bg-clip-text text-transparent;
   }
 
   .animate-float {
@@ -110,5 +128,9 @@
   @keyframes glow {
     0%, 100% { filter: brightness(100%) blur(0px); }
     50% { filter: brightness(120%) blur(1px); }
+  }
+  
+  .pulse-ring {
+    @apply absolute -inset-0.5 rounded-full bg-gradient-to-r from-crypto-orange via-crypto-purple to-crypto-blue opacity-75 blur animate-pulse;
   }
 }

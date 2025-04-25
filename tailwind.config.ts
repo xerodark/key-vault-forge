@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -72,6 +73,7 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
+				// New premium color palette
 				'crypto-purple': {
 					DEFAULT: '#7E69AB',
 					light: '#9F8BC1',
@@ -81,6 +83,12 @@ export default {
 					DEFAULT: '#1EAEDB',
 					light: '#40C3ED',
 					dark: '#1899C0'
+				},
+				glass: {
+					DEFAULT: 'rgba(255, 255, 255, 0.05)',
+					light: 'rgba(255, 255, 255, 0.08)',
+					dark: 'rgba(0, 0, 0, 0.2)',
+					border: 'rgba(255, 255, 255, 0.08)'
 				}
 			},
 			borderRadius: {
@@ -144,6 +152,18 @@ export default {
 						opacity: '1',
 						transform: 'scale(1.05)'
 					},
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-10px)' }
+				},
+				'shimmer': {
+					'0%': { backgroundPosition: '-200% 0' },
+					'100%': { backgroundPosition: '200% 0' }
+				},
+				'pulse-border': {
+					'0%, 100%': { borderColor: 'rgba(255,255,255,0.1)' },
+					'50%': { borderColor: 'rgba(255,255,255,0.3)' }
 				}
 			},
 			animation: {
@@ -153,11 +173,20 @@ export default {
 				'fade-out': 'fade-out 0.3s ease-out',
 				'scale-in': 'scale-in 0.2s ease-out',
 				'glow-pulse': 'glow-pulse 4s ease-in-out infinite',
+				'float': 'float 6s ease-in-out infinite',
+				'shimmer': 'shimmer 8s ease-in-out infinite',
+				'pulse-border': 'pulse-border 4s ease-in-out infinite'
 			},
 			boxShadow: {
 				'glow-sm': '0 0 15px 2px rgba(249, 115, 22, 0.15)',
 				'glow-md': '0 0 25px 5px rgba(249, 115, 22, 0.2)',
-				'glow-lg': '0 0 35px 10px rgba(249, 115, 22, 0.25)'
+				'glow-lg': '0 0 35px 10px rgba(249, 115, 22, 0.25)',
+				'glow-purple': '0 0 20px 2px rgba(126, 105, 171, 0.25)',
+				'glow-blue': '0 0 20px 2px rgba(30, 174, 219, 0.25)'
+			},
+			backdropFilter: {
+				'none': 'none',
+				'blur': 'blur(20px)'
 			}
 		}
 	},
